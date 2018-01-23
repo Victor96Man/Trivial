@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trivial>
+	<config>
+		<rondas>2</rondas>
+		<jugadores>4</jugadores>
+		<nrespuestas>4</nrespuestas>
+		<categorias>
+		</categorias>
+		<ficheros>
+			<imagen>../sabiogc/uploads/imagenes/</imagen>
+			<audio>../sabiogc/uploads/audios/</audio>
+			<video>../sabiogc/uploads/videos/</video>
+		</ficheros>
+	</config>
+	<jugadores>
+		<jugador>
+			<nombre>Paco</nombre>
+			<foto>perm_identity</foto>
+		</jugador>
+		<jugador>
+			<nombre>Rafael</nombre>
+			<foto>perm_identity</foto>
+		</jugador>
+		<jugador>
+			<nombre>Jose</nombre>
+			<foto>perm_identity</foto>
+		</jugador>
+		<jugador>
+			<nombre>Elvira</nombre>
+			<foto>perm_identity</foto>
+		</jugador>
+	</jugadores>
+</trivial>

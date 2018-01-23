@@ -1,0 +1,16 @@
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+img {
+	width: 150px;
+	height: 150px;
+}
+
+.col-md-4 {
+	border: 1px solid Gainsboro;
+	box-shadow: 5px 5px 5px Gainsboro;
+	margin: 20px;
+	width: 350px;
+	min-height: 280px;
+}

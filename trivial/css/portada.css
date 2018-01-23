@@ -1,0 +1,120 @@
+*{
+	font-family: 'Roboto', sans-serif;
+}
+
+body{
+	background-color: #d50000;
+}
+
+body h2{
+	font-size: 45px;
+	margin: 0px;
+	padding: 0px;
+}
+
+#formulario{	
+	margin: 10% auto;
+	text-align: center;
+	background-color: #EFEFEF;
+	width: 70%;
+	padding: 40px;
+	box-shadow: -14px 15px 3px 0px rgba(0,0,0,1);
+}
+
+
+#formulario form{
+	display: flex;
+	flex-flow: column;
+}
+
+
+label{
+	margin: 10px 0;
+}
+
+select{
+	padding: 5px;
+	width: 50%;
+}
+
+input[type="text"]{
+	width: 50%;
+	padding: 10px;
+  border: none;
+  border-bottom: solid 2px #c9c9c9;
+  transition: border 0.3s;
+}
+
+input[type="text"]:focus{
+	border-bottom: solid 2px #969696;
+}
+
+input[type="text"],select{
+	padding: 10px;
+	margin: 0 auto;
+  border: none;
+  border-bottom: solid 2px #c9c9c9;
+  transition: border 0.3s;
+}
+
+#jugadores input{
+	padding: 10px;
+  border: none;
+  border-bottom: solid 2px #c9c9c9;
+  transition: border 0.3s;
+}
+
+#jugadores input:focus{
+	border-bottom: solid 2px #969696;
+}
+
+#jugadores select{
+	width: 10%;
+	margin-left: 10px;
+	border-radius: 10px;
+	
+}
+
+#jugadores{
+	display: flex;
+	flex-flow: column;
+}
+
+#jugadores p{
+	font-size: 20px;
+}
+
+input[type="button"]{
+	margin:25px 10px 0px 10px;
+	border-radius: 5px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 28px;
+  background: #d60808;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+	transition: .7s all;
+}
+
+input[type="button"]:hover{
+  background: #fc0808;
+  text-decoration: none;
+}
+
+.fila{
+	display: flex;
+	flex-flow: row;
+	margin: 0 auto;
+	margin-top: 20px;
+}
+
+.fila input{
+	width: 30%;
+}
+
+.fila select{
+	width: 50%;
+}
+
+
+
