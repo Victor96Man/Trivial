@@ -6,7 +6,7 @@ if (!isset($_GET['page'])) {
 		include('./pages/preguntas.php');
 	}
 } else if (file_exists('./pages/' . $_GET['page'] . '.php')) {
-	include('./pages/' . $_GET['page'] . '.php');
+	include('./pages/'.$_GET['page'].'.php');
 } else {
 	if ($_SESSION['perfil'] == "invitado") {
 		include('./pages/homepage.php');

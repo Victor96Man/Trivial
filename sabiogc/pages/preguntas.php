@@ -3,15 +3,17 @@ if ($_SESSION['perfil'] != "experto" && $_SESSION['perfil'] != "admin") {
 	header("Location: ./index.php");
 }
 
-require_once "./funciones/upload.php";
-require_once "./includes/ModelPregunta.php";
-require_once "./includes/ModelCategoria.php";
-require_once "./includes/ModelExperto.php";
-require_once "./funciones/limpiarCadena.php";
+require "./funciones/upload.php";
+require "./includes/ModelPregunta.php";
+require "./includes/ModelCategoria.php";
+require "./includes/ModelExperto.php";
+require "./funciones/limpiarCadena.php";
+?>
+<script src='./js/searchPreg.js'></script>
+<script src='./js/vendor/jquery-1.11.2.min.js'></script>
+<script src='./js/comprobarObjeto.js'></script>
 
-echo "<script src=\"./js/searchPreg.js\"></script>";
-echo "<script src=\"./js/vendor/jquery-1.11.2.min.js\"></script>";
-echo "<script src=\"./js/comprobarObjeto.js\"></script>";
+<?php
 
 $errorP = $errorR1 = $errorR2 = $errorR3 = $errorR4 = $errorV = $errorC = $errorN = false;
 $pregunta = $respuesta1 = $respuesta2 = $respuesta3 = $respuesta4 = $valida = $categoria = $nivel = $ruta = $objeto = $tipo = "";
@@ -24,7 +26,7 @@ if (isset($_GET['id'])) {
 if (isset($_SESSION['msgError'])) {
 	$msgError = $_SESSION['msgError'];
 }
-
+//ACCION
 if (isset($_GET['accion'])) {
 	if ($_GET['accion'] == "editar") {
 		$_SESSION['oldRespuestas'] = array();
@@ -70,6 +72,8 @@ if (isset($_GET['accion'])) {
 		$accion = "Añadir pregunta";
 	}
 }
+
+
 
 if (isset($_POST['enviar'])) {
 	include("./funciones/validarPreguntas.php");
@@ -123,34 +127,39 @@ if (isset($_POST['enviar'])) {
 	unset($_SESSION['msgError']);
 	header('Location: ./index.php?page=preguntas');
 }
+?>
 
-echo "<div class=\"container\">
-		<p><span class=\"glyphicon glyphicon-user\"></span> Conectado al sistema como: ".$_SESSION['usuario'][0]['usuario']."</p>
-	</div>";
+<div class='container'>
+	<p><span class='glyphicon glyphicon-user'></span> Conectado al sistema como: <?= $_SESSION['usuario'][0]['usuario'] ?> </p>
+</div>
 
-if (!isset($_GET['accion'])) {
-	echo "<div class=\"container\">
+<?php
+if (!isset($_GET['accion'])) {?>
+	<div class="container">
 			<label>Buscador</label>
-			<p><input type=\"text\" class=\"form form-control\" onkeyup=\"showHint(this.value)\" placeholder=\"Búsqueda\">";
-	if ($_SESSION['perfil'] == "experto") {
-		echo "<a href=\"./index.php?page=preguntas&accion=annadir\" class=\"btn btn-success\"><span class=\"glyphicon glyphicon-plus\"></span> Añadir pregunta</a></p>";
-	}
-	echo "</div>";
-	echo "<div class=\"container\">";
-	echo "<h3>Preguntas</h3>";
+			<p><input type='text' class='form form-control' onkeyup='showHint(this.value)' placeholder='Búsqueda'>
+	<?php if ($_SESSION['perfil'] == "experto") { ?>
+		<a href="./index.php?page=preguntas&accion=annadir" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Añadir pregunta</a></p>
+	<?php } ?>
+</div>
+<div class="container">
+	<h3>Preguntas</h3>
+	<?php
 	$preguntas = new ModelPregunta();
 	if ($_SESSION['perfil'] == "experto") {
 		$resultado = $preguntas->getPreguntas($_SESSION['usuario'][0]['id'], 5);
-		echo "<p>Últimas 5 preguntas</p>";
-	} else if ($_SESSION['perfil'] == "admin") {
+		?>
+		<p>Últimas 5 preguntas</p>
+	<?php } else if ($_SESSION['perfil'] == "admin") {
 		$resultado = $preguntas->getPreguntasAdmin();
-		echo "<p>Últimas 15 preguntas</p>";
-	}
+		?>
+		<p>Últimas 15 preguntas</p>
+	<?php }
 	/*if (isset($_POST['buscar'])) {
 		if (isset($_POST['search'])) {
 			$texto = limpiarCadena($_POST['search']);
 		} else {
-			$texto = "";
+			$texto = "
 		}
 		if ($_SESSION['perfil'] == "experto") {
 			$resultado = $preguntas->buscarPreguntas($_SESSION['usuario'][0]['id'], $texto);
@@ -160,40 +169,43 @@ if (!isset($_GET['accion'])) {
 	} else {
 		if ($_SESSION['perfil'] == "experto") {
 			$resultado = $preguntas->getPreguntas($_SESSION['usuario'][0]['id'], 5);
-			echo "<p>Últimas 5 preguntas</p>";
+			<p>Últimas 5 preguntas</p>
 		} else if ($_SESSION['perfil'] == "admin") {
 			$resultado = $preguntas->getPreguntasAdmin();
-			echo "<p>Últimas 15 preguntas</p>";
+			<p>Últimas 15 preguntas</p>
 		}
 	}*/
 	$preguntas = null;
-	if (!empty($resultado)) {
-		echo "<div id=\"txtHint\">";
-		echo "<table class=\"table table-hover table-striped\">
-				<th class=\"text-center\">Pregunta</th><th class=\"text-center\">Categoría</th><th class=\"text-center\">Nivel</th><th colspan=\"3\" class=\"text-center\">Opciones</th>";
-		foreach ($resultado as $key => $value) {
-			echo "<tr>";
-			echo "<td>".$value['pregunta']."</td><td>".$value['categoria']."</td><td>".$value['nivel']."</td>";
-			echo "<td><a href=\"./index.php?page=preguntas&id=".$value['id']."&accion=editar\" class=\"btn btn-primary\"><span class=\"glyphicon glyphicon-pencil\"></span> Editar</a></td>";
-			echo "</tr>";
-		}
-		echo "</table>";
-		echo "</div>";
-	} else {
-		echo "<br /><p>Aún no has introducido preguntas.</p><br />";
-	}
-	echo "</div>";
-}
+	if (!empty($resultado)) {?>
+		<div id='txtHint'>
+			<table class='table table-hover table-striped'>
+				<th class='text-center'>Pregunta</th><th class='text-center'>Categoría</th><th class='text-center'>Nivel</th><th colspan='3' class='text-center'>Opciones</th>
+			<?php foreach ($resultado as $key => $value) { ?>
+				<tr>
+					<td><?= $value['pregunta'] ?></td><td><?= $value['categoria'] ?></td><td><?= $value['nivel'] ?></td>
+					<td><a href=<?= './index.php?page=preguntas&id='.$value['id'].'&accion=editar'?> class='btn btn-primary'><span class='glyphicon glyphicon-pencil'></span> Editar</a></td>
+				</tr>
+			<?php } ?>
+			</table>
+		</div>
+	<?php } else { ?>
+ 		<br/>
+ 		<p>Aún no has introducido preguntas.</p>
+ 		<br/>
+	<?php } ?>
+	</div>
+<?php } 
 
-if (isset($_GET['accion']) && ($_GET['accion'] == "annadir" || $_GET['accion'] == "editar")) {
-	echo "<div class=\"container\">";
-	echo "<form method=\"post\" action=\"" . htmlspecialchars('./index.php?page=preguntas&accion=annadir') . "\" enctype=\"multipart/form-data\">";
-	echo "<h3>" . $accion . "</h3>";
-	echo "<p>
-			<label>Pregunta</label>
-			<input type=\"text\" class=\"form preg form-control\" name=\"pregunta\" value=\"".$pregunta."\">
-			<span class=\"error\">".$preguntaError."</span>
-		  </p>";
+if (isset($_GET['accion']) && ($_GET['accion'] == "annadir" || $_GET['accion'] == "editar")) { ?>
+<div class='container'>
+	<form method='post' action= <?= htmlspecialchars('./index.php?page=preguntas&accion=annadir') ?> enctype='multipart/form-data'>
+	<h3><?= $accion ?></h3>
+	<p>
+		<label>Pregunta</label>
+		<input type='text' class='form preg form-control' name='pregunta' value=<?= $pregunta ?>>
+		<span class='error'><?= $preguntaError ?></span>
+	</p>
+	<?php
 	if ($_SESSION['perfil'] == "experto") {
 		$objCategoria = new ModelExperto();
 		$resultadoCat = $objCategoria->getCategoriaExperto($_SESSION['usuario'][0]['id']);
@@ -202,119 +214,126 @@ if (isset($_GET['accion']) && ($_GET['accion'] == "annadir" || $_GET['accion'] =
 		$resultadoCat = $objCategoria->getCategorias();
 	}
 	$objCategoria = null;
-	echo "<p>
-			<label>Categoria</label>
-			<select name=\"categoria\">";
-			foreach ($resultadoCat as $key => $value) {
-				if ($value['categoria'] == $categoria) {
-					echo "<option value=\"".$value['categoria']."\" selected>".$value['categoria']."</option>";   
-				}else{
-					echo "<option value=\"".$value['categoria']."\">".$value['categoria']."</option>";      
-				}
-			}
-	echo "	</select>
-			<span class=\"error\">".$categoriaError."</span>";
+	?>
+	<p>
+		<label>Categoria</label>
+		<select name='categoria'>
+			<?php foreach ($resultadoCat as $key => $value) {
+				if ($value['categoria'] == $categoria) { ?>
+					<option value=<?= $value['categoria'] ?> selected> <?= $value['categoria'] ?> ></option>   
+				<?php }else{ ?>
+					<option value=<?= $value['categoria'] ?>> <?= $value['categoria']?> ></option>     
+				<?php }
+			} ?>
+		</select>
+		<span class='error'><?= $categoriaError ?></span>
+	<?php
 	$objNivel = new ModelPregunta();
 	$resultadoNivel = $objNivel->getNivel();
 	$objNivel = null;
-	echo "	<label id=\"dificultad\">Dificultad</label>
-			<select name=\"dificultad\">";
-			foreach ($resultadoNivel as $key => $value) {
-				if ($value['nivel'] == $nivel) {
-					echo "<option value=\"".$value['nivel']."\" selected>".$value['nivel']."</option>";
-				} else {
-					echo "<option value=\"".$value['nivel']."\">".$value['nivel']."</option>";
-				}
-			}
-	echo "	</select>
-			<span class=\"error\">".$nivelError."</span>
-		</p>";
-	echo "<div class=\"row\">
-			<div class=\"col-md-6\">
-			<p>
-			<label>Respuesta 1</label>
-			<input type=\"text\" class=\"form resp form-control\" name=\"respuesta1\" value=\"".$respuesta1."\">
-			<span class=\"error\">".$respuesta1Error."</span>
-		  </p>";
-	echo "<p>
-			<label>Respuesta 2</label>
-			<input type=\"text\" class=\"form resp form-control\" name=\"respuesta2\" value=\"".$respuesta2."\">
-			<span class=\"error\">".$respuesta2Error."</span>
-		  </p>";
-	echo "<p>
-			<label>Respuesta 3</label>
-			<input type=\"text\" class=\"form resp form-control\" name=\"respuesta3\" value=\"".$respuesta3."\">
-			<span class=\"error\">".$respuesta3Error."</span>
-		  </p>";
-	echo "<p>
-			<label>Respuesta 4</label>
-			<input type=\"text\" class=\"form resp form-control\" name=\"respuesta4\" value=\"".$respuesta4."\">
-			<span class=\"error\">".$respuesta4Error."</span>
-		  </p>";
-	echo "<p>
-			<label>Respuesta válida</label>
-			<select name=\"valida\">";
-			for ($i = 1; $i < 5 ; $i++) { 
-				if ($i == $valida) {
-					echo "<option value=\"".$i."\" selected>".$i."</option>";
-				}else{
-					echo "<option value=\"".$i."\">".$i."</option>";
-				}
-			}
-	echo "	</select>
-			<span class=\"error\">".$validaError."</span>
+	?>
+	<label id='dificultad'>Dificultad</label>
+		<select name='dificultad'>
+		<?php foreach ($resultadoNivel as $key => $value) {
+			if ($value['nivel'] == $nivel) { ?>
+				<option value=<?= $value['nivel']?> selected><?= $value['nivel']?></option>
+			<?php } else { ?>
+				<option value=<?= $value['nivel']?>><?= $value['nivel']?></option>
+			<?php }
+		} ?>
+	</select>
+	<span class='error'><?= $nivelError ?></span>
+	</p>
+	<div class='row'>
+		<div class='col-md-6'>
+		<p>
+		<label>Respuesta 1</label>
+		<input type='text' class='form resp form-control' name='respuesta1' value=<?= $respuesta1 ?>>
+		<span class='error'><?= $respuesta1Error ?></span>
+	</p>
+	<p>
+		<label>Respuesta 2</label>
+		<input type='text' class='form resp form-control' name='respuesta2' value=<?= $respuesta2 ?>>
+		<span class='error'><?= $respuesta2Error ?></span>
+	</p>
+	<p>
+		<label>Respuesta 3</label>
+		<input type='text' class='form resp form-control' name='respuesta3' value=<?= $respuesta3 ?>>
+		<span class='error'><?= $respuesta3Error ?></span>
+	</p>
+	<p>
+		<label>Respuesta 4</label>
+		<input type='text' class='form resp form-control' name='respuesta4' value=<?= $respuesta4 ?>>
+		<span class='error'><?= $respuesta4Error ?></span>
+	</p>
+	<p>
+		<label>Respuesta válida</label>
+		<select name='valida'>
+		<?php for ($i = 1; $i < 5 ; $i++) { 
+			if ($i == $valida) { ?>
+				<option value=<?= $i ?> selected><?= $i ?></option>
+			<?php }else{ ?>
+				<option value=<?= $i ?>><?= $i?></option>
+			<?php } 
+		} ?>
+		</select>
+		<span class='error'><?= $validaError?></span>
+	</p>
+</div>
+
+
+
+<?php if ($_GET['accion'] == "editar" && $_SESSION['tipoObjeto'] != "") { ?>
+	<div class='col-md-3'>
+		<?php switch ($_SESSION['tipoObjeto']) {
+			case 'Imagen': ?>
+				<img src=<?='./uploads/imagenes/'.$_SESSION['objeto'] ?> width='150px' height='150px'>
+				<?php break;
+			case 'Vídeo': ?>
+				<video src=<?= './uploads/videos/'.$_SESSION['objeto'] ?> controls width='320px' height='215px'></video>
+				<?php break;
+			case 'Audio':?>
+				<audio controls>
+					<source src=<?= './uploads/audios/'.$_SESSION['objeto'] ?>> 
+				</audio>
+				<?php break;
+			case 'Link': ?>
+				<iframe width='320' height='215' src=<?= str_replace("watch?v=", "embed/", $_SESSION['objeto']).'?html5=1?'?> frameborder='0' allowfullscreen">
+					
+				</iframe>
+				<?php break;
+		} ?>
+		<p>
+			<input type='checkbox' name='delObjeto' value='1'> Eliminar objeto
 		</p>
-		</div>";
-	if ($_GET['accion'] == "editar" && $_SESSION['tipoObjeto'] != "") {
-		echo "<div class=\"col-md-3\">";
-		switch ($_SESSION['tipoObjeto']) {
-			case 'Imagen':
-				echo "<img src=\"./uploads/imagenes/".$_SESSION['objeto']."\" width=\"150px\" height=\"150px\">";
-				break;
-			case 'Vídeo':
-				echo "<video src=\"./uploads/videos/".$_SESSION['objeto']."\" controls width=\"320px\" height=\"215px\"></video>";
-				break;
-			case 'Audio':
-				echo "<audio controls>
-						<source src=\"./uploads/audios/".$_SESSION['objeto']."\"> 
-					  </audio>";
-				break;
-			case 'Link':
-				echo "<iframe width=\"320\" height=\"215\" src=".str_replace("watch?v=", "embed/", $_SESSION['objeto'])."?html5=1 frameborder=\"0\" allowfullscreen></iframe>";
-				break;
-		}
-		echo "<p>
-				<input type=\"checkbox\" name=\"delObjeto\" value=\"1\"> Eliminar objeto
-			  </p>
-			  </div>";
-	}
-	echo "</div>";
-	echo "<p>
-			<label>Objeto a subir</label>
-			<input type=\"radio\" name=\"obj\" value=\"archivo\" checked>Subir archivo
-			<input type=\"radio\" name=\"obj\" value=\"url\" style=\"margin-left: 1em;\">Subir url
-		  </p>";
-	echo "<p id=\"fichero\" style=\"display: none;\">
-			<input type=\"file\" name=\"upload\">
-		  </p>";
-	echo "<p id=\"ficheroURL\" style=\"display: none;\">
-			<label style=\"vertical-align: top\">URL</label>
-			<textarea class=\"form url form-control\" rows=\"3\" name=\"url\"></textarea>
-		  </p>";
-	echo "<br />";
-	if ($_GET['accion'] == "annadir") {
-		echo "<p>
-				<input type=\"submit\" class=\"btn btn-primary\" name=\"enviar\" value=\"Aceptar\">
-				<input type=\"submit\" class=\"btn btn-danger\" name=\"cancelar\" value=\"Cancelar\">
-			  </p>";
-	} else if ($_GET['accion'] == "editar") {
-		echo "<p>
-				<input type=\"submit\" name=\"editar\" value=\"Editar\" class=\"btn btn-primary\">
-				<input type=\"submit\" name=\"eliminar\" value=\"Eliminar\" class=\"btn btn-danger\">
-				<input type=\"submit\" name=\"cancelar\" value=\"Cancelar\" class=\"btn btn-danger\">
-			  </p>";
-	}
-	echo "<p class=\"error\">".$msgError."</p>";
-	echo "</form>";
-	echo "</div>";
-}
+	</div>
+	<?php } ?>
+</div>
+	<p>
+		<label>Objeto a subir</label>
+		<input type="radio" name="obj" value="archivo" checked>Subir archivo
+		<input type="radio" name="obj" value="url" style="margin-left: 1em;">Subir url
+	</p>
+	<p id="fichero" style="display: none;">
+		<input type="file" name="upload">
+	</p>
+	<p id="ficheroURL" style="display: none;">
+		<label style="vertical-align: top">URL</label>
+		<textarea class="form url form-control" rows="3" name="url"></textarea>
+	</p><br/>
+	<?php if ($_GET['accion'] == "annadir") { ?>
+		<p>
+			<input type="submit" class="btn btn-primary" name="enviar" value="Aceptar">
+			<input type="submit" class="btn btn-danger" name="cancelar" value="Cancelar">
+		</p>
+	<?php } else if ($_GET['accion'] == "editar") { ?>
+		<p>
+			<input type="submit" name="editar" value="Editar" class="btn btn-primary">
+			<input type="submit" name="eliminar" value="Eliminar" class="btn btn-danger">
+			<input type="submit" name="cancelar" value="Cancelar" class="btn btn-danger">
+		</p>
+	<?php } ?>
+		<p class="error"><?= $msgError?></p>
+	</form>
+</div>
+<?php }

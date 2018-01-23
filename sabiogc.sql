@@ -6,7 +6,9 @@
 -- Tiempo de generación: 27-11-2017 a las 12:50:11
 -- Versión del servidor: 5.5.47
 -- Versión de PHP: 5.3.10-1ubuntu3.21
-
+drop database sabiogc if EXISTS;
+create database sabiogc;
+use sabiogc;
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 

@@ -1,6 +1,6 @@
 <?php
-require_once "./includes/ModelUsuario.php";
-require_once "./funciones/limpiarCadena.php";
+require "./includes/ModelUsuario.php";
+require "./funciones/limpiarCadena.php";
 
 $autentificacion = ModelUsuario::singleton();
 
@@ -45,23 +45,26 @@ if (isset($_POST['login'])) {
 				$_SESSION['perfil'] = "experto";
 			}
 			$_SESSION['usuario'] = $resultado;
-			header("Location: ./index.php?page=preguntas");
+			header("Location:./index.php?page=preguntas");
 		}
 	}
 }
+?>
 
-echo "<form method=\"post\" action=\"" . htmlspecialchars('./index.php?page=homepage') . "\">
-	  <div class=\"login container\">
-		<h3>Iniciar sesión</h3>";
-		if ($error) { echo "<div class=\"alert alert-danger\" role=\"alert\">".$msgError."</div>"; }
-echo "	<div class=\"form-group\">
+<form method="post" action= <?= htmlspecialchars('./index.php?page=homepage')?> >
+	  <div class="login container">
+		<h3>Iniciar sesión</h3>
+		<?php if ($error) { ?> 
+		<div class="alert alert-danger" role="alert"> <?= $msgError ?> </div>
+		<?php } ?>
+		<div class="form-group">
 			<label>Usuario</label>
-			<input type=\"text\" class=\"form-control\" name=\"usuario\" placeholder=\"Usuario\">
+			<input type="text" class="form-control" name="usuario" placeholder="Usuario">
 		</div>
-		<div class=\"form-group\">
+		<div class="form-group">
 			<label>Contraseña</label>
-			<input type=\"password\" class=\"form-control\" name=\"password\" placeholder=\"Contraseña\">
+			<input type="password" class="form-control" name="password" placeholder="Contraseña">
 		</div>
-		<input type=\"submit\" class=\"btn btn-primary\" name=\"login\" value=\"Iniciar sesión\"><br />
+		<input type="submit" class="btn btn-primary" name="login" value="Iniciar sesión"><br />
 	</div>
-	</form>";
+	</form>
